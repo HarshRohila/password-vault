@@ -19,12 +19,16 @@ export const MasterPwdForm = ({
 	onSubmit,
 	isSubmitLoading,
 }: MasterPwdFormProps) => {
+	const handleSubmit = (values: typeof initialValue) => {
+		onSubmit?.(values);
+	};
+
 	return (
 		<>
 			<Formik
 				initialValues={initialValue}
 				validationSchema={MasterPwdValidation}
-				onSubmit={onSubmit ? onSubmit : () => {}}
+				onSubmit={onSubmit ? handleSubmit : () => {}}
 			>
 				{({ errors, touched }) => (
 					<Form>
@@ -34,7 +38,6 @@ export const MasterPwdForm = ({
 							name="masterPwd"
 							label="Master Password"
 						/>
-						{console.log(errors)}
 						{errors.masterPwd && touched.masterPwd ? (
 							<div>{errors.masterPwd}</div>
 						) : null}
