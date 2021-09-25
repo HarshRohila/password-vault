@@ -1,3 +1,4 @@
+import { Link } from '@reach/router';
 import React, { useEffect, useState } from 'react';
 import { Login } from '../components/Login';
 import { MasterPwdForm } from '../forms/masterPassword';
@@ -13,7 +14,11 @@ export const HomePage = ({}: HomePageProps) => {
 	return (
 		<>
 			<Login />
-			{isLoggedIn && <MasterPwdForm />}
+			{isLoggedIn && <MasterPwdForm /> && (
+				<nav>
+					<Link to="credentials">Show Credentials</Link>
+				</nav>
+			)}
 		</>
 	);
 };
