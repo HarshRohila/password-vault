@@ -1,24 +1,23 @@
-import { Link } from '@reach/router';
-import React, { useEffect, useState } from 'react';
-import { Login } from '../components/Login';
-import { MasterPwdForm } from '../forms/masterPassword';
-import useAuth from '../hooks/useAuth';
+// import { Link } from '@reach/router'
+import React, { useEffect, useState } from 'react'
+import { Login } from '../components/Login'
+import useAuth from '../hooks/useAuth'
 
-type HomePageProps = {};
+type HomePageProps = {}
 
 export const HomePage = ({}: HomePageProps) => {
-	const { isLoggedIn } = useAuth();
+	const { isLoggedIn } = useAuth()
 
-	useEffect(() => {}, []);
+	useEffect(() => {}, [])
 
 	return (
 		<>
 			<Login />
-			{isLoggedIn && <MasterPwdForm /> && (
+			{/* {isLoggedIn && <MasterPwdForm /> && (
 				<nav>
 					<Link to="credentials">Show Credentials</Link>
 				</nav>
-			)}
+			)} */}
 		</>
-	);
-};
+	)
+}

@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect } from 'react'
 
 const useAsync = <T, E = string>(
 	asyncFunction: (...args: any[]) => Promise<T>,
@@ -6,9 +6,9 @@ const useAsync = <T, E = string>(
 ) => {
 	const [status, setStatus] = useState<
 		'idle' | 'pending' | 'success' | 'error'
-	>('idle');
-	const [value, setValue] = useState<T | null>(null);
-	const [error, setError] = useState<E | null>(null);
+	>('idle')
+	const [value, setValue] = useState<T | null>(null)
+	const [error, setError] = useState<E | null>(null)
 
 	// The execute function wraps asyncFunction and
 	// handles setting state for pending, value, and error.
@@ -16,34 +16,33 @@ const useAsync = <T, E = string>(
 	// on every render, but only if asyncFunction changes.
 	const execute = useCallback(
 		(...args) => {
-			setStatus('pending');
-			setValue(null);
-			setError(null);
+			setStatus('pending')
+			setValue(null)
+			setError(null)
 
-			debugger;
 			return asyncFunction(...args)
 				.then((response: any) => {
-					setValue(response);
-					setStatus('success');
+					setValue(response)
+					setStatus('success')
 				})
 				.catch((error: any) => {
-					setError(error);
-					setStatus('error');
-				});
+					setError(error)
+					setStatus('error')
+				})
 		},
 		[asyncFunction]
-	);
+	)
 
 	// Call execute if we want to fire it right away.
 	// Otherwise execute can be called later, such as
 	// in an onClick handler.
 	useEffect(() => {
 		if (immediate) {
-			execute();
+			execute()
 		}
-	}, [execute, immediate]);
+	}, [execute, immediate])
 
-	return { execute, status, value, error };
-};
+	return { execute, status, value, error }
+}
 
-export default useAsync;
+export default useAsync
