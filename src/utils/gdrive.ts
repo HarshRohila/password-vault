@@ -58,4 +58,51 @@ let gdrive = {
 			throw err
 		}
 	},
+
+	async updateFile(fileId: string, data: any) {
+		try {
+			await fetch(
+				`https://www.googleapis.com/upload/drive/v3/files/${fileId}?uploadType=media`,
+				{
+					method: 'PATCH',
+					headers: new Headers({ Authorization: 'Bearer ' + getToken() }),
+					body: data,
+				}
+			)
+		} catch (err) {
+			console.error('Failed to update file', err)
+			throw err
+		}
+	},
+
+	async createFileWithContent(fileName: string, content: string) {
+		const file = new Blob([content], { type: 'text/plain' })
+		const metadata = {
+			name: fileName,
+			mimeType: 'text/plain',
+			parents: ['appDataFolder'], // Google Drive folder id
+		}
+
+		const accessToken = getToken()
+		const form = new FormData()
+		form.append(
+			'metadata',
+			new Blob([JSON.stringify(metadata)], { type: 'application/json' })
+		)
+		form.append('file', file)
+
+		try {
+			await fetch(
+				'https://www.googleapis.com/upload/drive/v3/files?uploadType=multipart&supportsAllDrives=true',
+				{
+					method: 'POST',
+					headers: new Headers({ Authorization: 'Bearer ' + accessToken }),
+					body: form,
+				}
+			)
+		} catch (err) {
+			console.error('Failed to create file', err)
+			throw err
+		}
+	},
 }
