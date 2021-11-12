@@ -1,19 +1,15 @@
+import { gdrive } from './utils/gdrive'
+
+export { gDriveService, FileNotFoundError }
+
 const FILE_NAME = 'data3'
 
 async function getFile(fileName: string) {
-	let response
-	try {
-		response = await gapi.client.drive.files.list({
-			pageSize: 10,
-			spaces: 'appDataFolder',
-			fields: 'nextPageToken, files(id, name)',
-		})
-	} catch (err) {
-		console.error('Failed to get files from gdrive', err)
-		throw err
-	}
-
-	const files = response.result.files
+	let files = await gdrive.listFiles({
+		pageSize: 10,
+		spaces: 'appDataFolder',
+		fields: 'nextPageToken, files(id, name)',
+	})
 
 	if (!files) {
 		throw new FileNotFoundError()
@@ -93,24 +89,8 @@ const gDriveService = {
 
 	async getData() {
 		const file = await getFile(FILE_NAME)
-
-		const accessToken = gapi.auth.getToken().access_token
-		try {
-			const res = await fetch(
-				`https://www.googleapis.com/drive/v3/files/${file.id}?alt=media`,
-				{
-					headers: new Headers({ Authorization: 'Bearer ' + accessToken }),
-				}
-			)
-			const data = await res.text()
-			return data
-		} catch (err) {
-			console.error('Failed to read file', err)
-			throw err
-		}
+		return gdrive.getFileData(file.id!)
 	},
 }
 
 class FileNotFoundError extends Error {}
-
-export default gDriveService
