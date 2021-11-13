@@ -1,5 +1,5 @@
 import { atom } from 'jotai'
 
 const isLoggedIn = atom(false)
-const authDataAtom = atom<gapi.auth2.GoogleUser | undefined>(undefined)
+const authDataAtom = atom<boolean>(false)
 export { isLoggedIn, authDataAtom }

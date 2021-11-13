@@ -1,9 +1,10 @@
 import { useAtom } from 'jotai'
-import gDriveService from '../gdriveService'
 import { authService } from '../services/authService'
 import { authDataAtom } from '../states'
 
-export default function useAuth() {
+export { auth, useAuth }
+
+function useAuth() {
 	const [authData, setAuthData] = useAtom(authDataAtom)
 
 	return {
@@ -16,12 +17,16 @@ export default function useAuth() {
 			// 	googleAuthProvider
 			// );
 
-			setAuthData(undefined)
+			setAuthData(true)
 		},
 		async logout() {
 			// @ts-ignore
 			await authService.logout()
-			setAuthData(undefined)
+			setAuthData(false)
 		},
 	}
+}
+
+const auth = {
+	useAuth,
 }

@@ -46,7 +46,9 @@
 			 */
 			function handleClientLoad() {
 				gapi.load('client:auth2', () => {
-					gapi.client.load('drive', 'v3')
+					gapi.client.load('drive', 'v3', () => {
+						window.onLoadGapi && window.onLoadGapi()
+					})
 				})
 			}
 		</script>

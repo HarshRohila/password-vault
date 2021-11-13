@@ -1,5 +1,7 @@
 import { useState, useCallback, useEffect } from 'react'
 
+export { asyncHook }
+
 const useAsync = <T, E = string>(
 	asyncFunction: (...args: any[]) => Promise<T>,
 	immediate = true
@@ -45,4 +47,6 @@ const useAsync = <T, E = string>(
 	return { execute, status, value, error }
 }
 
-export default useAsync
+let asyncHook = {
+	useAsync,
+}
